@@ -1,0 +1,379 @@
+/* =========================
+   Mobile Styles (max-width: 900px)
+   ========================= */
+
+/* 1. Header adjustments */
+.site-header {
+  border-bottom: none; /* Remove border on mobile */
+}
+
+.site-logo {
+  display: none; /* Hide text logo on mobile */
+}
+
+/* Show mobile menu toggle */
+.mobile-menu-toggle {
+  display: inline-flex !important;
+  background: none;
+  border: 0;
+  font-size: 1.2rem;
+  color: var(--accent-dark);
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* Hide desktop nav */
+.nav-menu {
+  display: none !important;
+}
+
+/* Mobile menu styles */
+.mobile-menu {
+  display: none; /* hide by default */
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 6px 18px var(--shadow);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.mobile-menu.active {
+  display: block; /* show when JS adds 'active' */
+}
+
+.mobile-menu-list {
+  list-style: none;
+  padding: 12px 0;
+  margin: 0;
+}
+
+.mobile-menu-list li {
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-menu-list li:last-child {
+  border-bottom: none;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--accent-dark);
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* 2. Hero section mobile layout */
+.hero {
+  padding: 20px 0;
+  position: relative;
+}
+
+.hero-grid {
+  grid-template-columns: 1fr !important;
+  gap: 20px !important;
+  text-align: center;
+}
+
+.hero-text {
+  order: 1 !important;
+  max-width: 100% !important;
+}
+
+.main-title {
+  font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+  margin-bottom: 8px !important;
+  position: relative;
+  z-index: 2;
+}
+
+.subtitle {
+  font-size: 0.9rem !important;
+  margin-bottom: 15px !important;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-media {
+  order: 2 !important;
+  padding-top: 0 !important;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* 3. Image carousel for mobile */
+.image-pair {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  /* animation: slowScroll 40s linear infinite; */
+  padding: 10px 0;
+}
+
+@keyframes slowScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.image-pair img {
+  width: 160px !important;
+  height: 230px !important;
+  min-height: 200px !important;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.image-caption {
+  font-size: 1.5rem !important;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* 4. Lead text and button under images */
+.lead {
+  font-size: 1rem !important;
+  margin: 20px 0 !important;
+  text-align: center;
+}
+
+.hero-text .btn.primary {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* 5. Templates categories grid */
+.templates-categories {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 10px !important;
+  margin-bottom: 30px !important;
+  padding: 0 10px;
+}
+
+/* Scope category buttons only inside templates section */
+/* Mobile-specific tweaks only */
+.templates-section .category-btn {
+  padding: 10px 10px !important;
+  font-size: 12px !important;
+  border-radius: 20px !important;
+  width: 100%;
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  text-overflow: clip;
+  text-align: center;
+}
+
+/* 6. Templates grid - 2 per row */
+.templates-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 30px !important;
+}
+
+.template-card {
+  max-width: 160px !important;
+}
+
+.template-image {
+  border-radius: 20px !important;
+  margin-bottom: 10px !important;
+}
+
+.template-title {
+  font-size: 18px !important;
+}
+
+.template-price {
+  font-size: 16px !important;
+}
+
+.template-btn {
+  padding: 8px 0 !important;
+  font-size: 14px !important;
+}
+
+/* 7. Workflow carousel */
+
+.workflow-carousel {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.workflow-card {
+  flex: 0 0 auto;
+  min-width: 200px;
+  max-width: 300px;
+  scroll-snap-align: start;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.scroll-hint {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--accent-dark);
+  margin-top: 12px;
+  animation: bounceRight 1.5s infinite;
+}
+
+.scroll-hint .arrow {
+  font-size: 18px;
+}
+
+@keyframes bounceRight {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+/* 8. Section title flex column */
+.section-title {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+/* 9. Order section contacts layout */
+.order-container {
+  padding: 20px;
+}
+
+.order-text {
+  font-size: 16px !important;
+  margin-bottom: 20px !important;
+  padding: 0 10px;
+}
+
+.order-btn {
+  padding: 12px 40px !important;
+  font-size: 16px !important;
+  margin-bottom: 20px !important;
+}
+
+.order-socials {
+  gap: 15px !important;
+  margin-bottom: 15px !important;
+}
+
+.soc-icon {
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 18px !important;
+}
+
+.order-copy {
+  font-size: 12px !important;
+  margin-top: 15px !important;
+}
+
+/* 10. FAQ grid adjustments */
+.faq-grid {
+  grid-template-columns: 1fr !important;
+  gap: 20px !important;
+}
+
+.faq-title {
+  font-size: 1.8rem !important;
+  margin-bottom: 30px !important;
+}
+
+.faq-question {
+  font-size: 18px !important;
+}
+
+/* 11. Modal adjustments */
+.modal-content {
+  width: 90% !important;
+  padding: 30px 20px !important;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.radio-group {
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 12. Price cards adjustments */
+.cards-wrapper {
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.price-card {
+  width: 100% !important;
+  max-width: 400px;
+  padding: 20px !important;
+}
+
+/* 13. General section padding */
+.section {
+  padding: 30px 0 !important;
+}
+
+.templates-section {
+  padding: 40px 0 !important;
+}
+
+.workflow-section {
+  padding: 40px 0 !important;
+}
+
+.faq-section {
+  padding: 40px 0 !important;
+}
+
+.order-section {
+  padding: 40px 0 !important;
+}
+
+/* 14. Container padding */
+.container {
+  padding: 0 15px !important;
+}
+
+/* 15. Logo image in order section */
+.logo-image {
+  margin-bottom: 15px;
+}
+
+.logo-image img {
+  width: 50px;
+  height: 50px;
+}
