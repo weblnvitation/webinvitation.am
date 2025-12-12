@@ -1,82 +1,75 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ====== MOBILE MENU ======
+  // ========================
+  // MOBILE MENU
+  // ========================
   const toggle = document.getElementById("mobileMenuToggle");
   const menu = document.getElementById("mobileMenu");
   const yearEl = document.getElementById("year");
 
-  if (!toggle || !menu) return; // safety check
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  toggle.addEventListener("click", () => {
-    console.log("Mobile menu toggle clicked"); // log
-    menu.classList.toggle("active");
-    const isActive = menu.classList.contains("active");
-
-    toggle.setAttribute("aria-expanded", String(isActive));
-    toggle.setAttribute(
-      "aria-label",
-      isActive ? "Закрыть меню" : "Открыть меню"
-    );
-  });
-
-  document.querySelectorAll(".mobile-nav-link").forEach((link) => {
-    link.addEventListener("click", () => {
-      console.log("Mobile menu link clicked:", link.textContent); // log
-      menu.classList.remove("active");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Открыть меню");
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("active");
+      const isActive = menu.classList.contains("active");
+      toggle.setAttribute("aria-expanded", String(isActive));
+      toggle.setAttribute(
+        "aria-label",
+        isActive ? "Закрыть меню" : "Открыть меню"
+      );
     });
-  });
 
-  // ====== CATEGORY BUTTONS ======
+    document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.classList.remove("active");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Открыть меню");
+      });
+    });
+  }
+
+  // ========================
+  // CATEGORY FILTER
+  // ========================
   const categoryButtons = document.querySelectorAll(".category-btn");
   const templates = document.querySelectorAll(".template-card");
 
   categoryButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      console.log("Category button clicked:", button.dataset.category); // log
       categoryButtons.forEach((btn) => btn.classList.remove("active"));
       button.classList.add("active");
 
       const category = button.dataset.category;
-
       templates.forEach((template) => {
-        if (category === "all") {
-          template.style.display = "block";
-        } else {
-          template.style.display = template.classList.contains(category)
+        template.style.display =
+          category === "all" || template.classList.contains(category)
             ? "block"
             : "none";
-        }
       });
     });
   });
 
-  // ====== TEMPLATE BUTTONS ======
-  const templateButtons = document.querySelectorAll(".template-btn");
-
-  templateButtons.forEach((button) => {
+  // ========================
+  // TEMPLATE BUTTONS
+  // ========================
+  document.querySelectorAll(".template-btn").forEach((button) => {
     button.addEventListener("click", () => {
-      console.log("Template button clicked:", button.dataset.href); // log
       const href = button.dataset.href;
-      if (href) {
-        window.open(href, "_blank");
-      }
+      if (href) window.open(href, "_blank");
     });
   });
 
-  // ====== FAQ ======
-  const items = document.querySelectorAll(".faq-item");
-
-  items.forEach((item) => {
+  // ========================
+  // FAQ TOGGLE
+  // ========================
+  const faqItems = document.querySelectorAll(".faq-item");
+  faqItems.forEach((item) => {
     const question = item.querySelector(".faq-question");
     const icon = item.querySelector(".icon");
 
     question.addEventListener("click", () => {
-      console.log("FAQ clicked:", question.textContent); // log
-
-      // Close all others
-      items.forEach((i) => {
+      // Close others
+      faqItems.forEach((i) => {
         if (i !== item) {
           i.classList.remove("open");
           const ic = i.querySelector(".icon");
@@ -86,60 +79,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const isOpen = item.classList.contains("open");
       item.classList.toggle("open");
-
-      icon.textContent = isOpen ? "＋" : "✕";
+      if (icon) icon.textContent = isOpen ? "＋" : "✕";
     });
   });
 
-  // ====== MODAL ======
+  // ========================
+  // MODAL
+  // ========================
   const openBtn = document.getElementById("openOrderModal");
   const modal = document.getElementById("orderModal");
   const closeBtn = document.querySelector(".close-modal");
 
   if (openBtn && modal && closeBtn) {
     openBtn.addEventListener("click", () => {
-      console.log("Open modal button clicked"); // log
       modal.style.display = "flex";
     });
 
     closeBtn.addEventListener("click", () => {
-      console.log("Close modal button clicked"); // log
       modal.style.display = "none";
     });
 
     window.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        console.log("Modal background clicked"); // log
-        modal.style.display = "none";
-      }
+      if (e.target === modal) modal.style.display = "none";
     });
   }
 
-  // ====== WORKFLOW CAROUSEL ======
+  // ========================
+  // WORKFLOW CAROUSEL (MOBILE)
+  // ========================
   const track = document.querySelector(".carousel-track");
   const prevBtn = document.querySelector(".carousel-prev");
   const nextBtn = document.querySelector(".carousel-next");
+  const scrollHint = document.querySelector(".scroll-hint");
 
   if (track && prevBtn && nextBtn) {
+    const scrollAmount = 260; // width of one card + gap
+
+    // Buttons
     nextBtn.addEventListener("click", () => {
-      console.log("Carousel next clicked"); // log
-      track.scrollBy({ left: 300, behavior: "smooth" });
+      track.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      if (scrollHint) scrollHint.style.display = "none";
     });
 
     prevBtn.addEventListener("click", () => {
-      console.log("Carousel prev clicked"); // log
-      track.scrollBy({ left: -300, behavior: "smooth" });
+      track.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      if (scrollHint) scrollHint.style.display = "none";
     });
 
-    // Optional: drag support
-    let isDragging = false;
-    let startX;
-    let scrollLeft;
+    // Drag support
+    let isDragging = false,
+      startX,
+      scrollLeft;
 
     track.addEventListener("mousedown", (e) => {
       isDragging = true;
       startX = e.pageX - track.offsetLeft;
       scrollLeft = track.scrollLeft;
+      if (scrollHint) scrollHint.style.display = "none";
     });
 
     track.addEventListener("mouseleave", () => (isDragging = false));
@@ -149,8 +145,40 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isDragging) return;
       e.preventDefault();
       const x = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 2; // scroll speed
-      track.scrollLeft = scrollLeft - walk;
+      track.scrollLeft = scrollLeft - (x - startX) * 2; // speed
+    });
+
+    // Touch support
+    let touchStartX = 0,
+      touchScrollLeft = 0;
+
+    track.addEventListener("touchstart", (e) => {
+      touchStartX = e.touches[0].pageX;
+      touchScrollLeft = track.scrollLeft;
+      if (scrollHint) scrollHint.style.display = "none";
+    });
+
+    track.addEventListener("touchmove", (e) => {
+      const x = e.touches[0].pageX;
+      track.scrollLeft = touchScrollLeft + (touchStartX - x) * 2;
     });
   }
+
+  // ========================
+  // ANIMATIONS ON VIEW
+  // ========================
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("active");
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  document
+    .querySelectorAll(
+      ".fade-in, .price-card, .workflow-card, .main-title, .subtitle, .lead, .section-title, .workflow-card-title, .template-title"
+    )
+    .forEach((el) => observer.observe(el));
 });
