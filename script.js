@@ -86,13 +86,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========================
   // MODAL
   // ========================
-  const openBtn = document.getElementById("openOrderModal");
+  const openBtns = document.getElementsByClassName("openOrderModal");
   const modal = document.getElementById("orderModal");
   const closeBtn = document.querySelector(".close-modal");
 
-  if (openBtn && modal && closeBtn) {
-    openBtn.addEventListener("click", () => {
-      modal.style.display = "flex";
+  if (openBtns && modal && closeBtn) {
+    // Loop through all buttons
+    Array.from(openBtns).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        modal.style.display = "flex";
+      });
     });
 
     closeBtn.addEventListener("click", () => {
@@ -107,26 +110,31 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========================
   // WORKFLOW CAROUSEL (MOBILE)
   // ========================
-  const track = document.querySelector(".carousel-track");
+  const track = document.querySelector(".workflow-grid");
   const prevBtn = document.querySelector(".carousel-prev");
   const nextBtn = document.querySelector(".carousel-next");
   const scrollHint = document.querySelector(".scroll-hint");
 
   if (track && prevBtn && nextBtn) {
-    const scrollAmount = 260; // width of one card + gap
+    const getScrollAmount = () => {
+      const card = track.querySelector(".workflow-card");
+      if (!card) return 260;
+      const style = getComputedStyle(card);
+      const gap = parseInt(style.marginRight) || 16; // fallback gap
+      return card.offsetWidth + gap;
+    };
 
-    // Buttons
     nextBtn.addEventListener("click", () => {
-      track.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
       if (scrollHint) scrollHint.style.display = "none";
     });
 
     prevBtn.addEventListener("click", () => {
-      track.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
       if (scrollHint) scrollHint.style.display = "none";
     });
 
-    // Drag support
+    // Drag / touch support
     let isDragging = false,
       startX,
       scrollLeft;
@@ -138,29 +146,25 @@ document.addEventListener("DOMContentLoaded", () => {
       if (scrollHint) scrollHint.style.display = "none";
     });
 
-    track.addEventListener("mouseleave", () => (isDragging = false));
     track.addEventListener("mouseup", () => (isDragging = false));
+    track.addEventListener("mouseleave", () => (isDragging = false));
 
     track.addEventListener("mousemove", (e) => {
       if (!isDragging) return;
       e.preventDefault();
       const x = e.pageX - track.offsetLeft;
-      track.scrollLeft = scrollLeft - (x - startX) * 2; // speed
+      track.scrollLeft = scrollLeft - (x - startX) * 2;
     });
 
-    // Touch support
-    let touchStartX = 0,
-      touchScrollLeft = 0;
-
     track.addEventListener("touchstart", (e) => {
-      touchStartX = e.touches[0].pageX;
-      touchScrollLeft = track.scrollLeft;
+      startX = e.touches[0].pageX;
+      scrollLeft = track.scrollLeft;
       if (scrollHint) scrollHint.style.display = "none";
     });
 
     track.addEventListener("touchmove", (e) => {
       const x = e.touches[0].pageX;
-      track.scrollLeft = touchScrollLeft + (touchStartX - x) * 2;
+      track.scrollLeft = scrollLeft + (startX - x);
     });
   }
 
